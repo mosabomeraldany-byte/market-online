@@ -3,344 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الداني للخدمات الذكية 🚀</title>
+    <title>سوق الخدمات الرقمي 🏪</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a, #1e293b);
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-color: #ffffff;
-            --text-muted: #94a3b8;
-            --primary: #00f2fe;
-            --secondary: #7000ff;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+            /* ألوان جميلة ومتناسقة مع منصتك */
+            --bg-gradient: linear-gradient(135deg, #070b19 0%, #110d2c 50%, #1a0b2e 100%);
+            --card-bg: rgba(255, 255, 255, 0.04);
             --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #00f2fe;
+            --secondary: #9d4edd;
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-
-        body {
-            background: var(--bg-gradient);
-            color: var(--text-color);
-            min-height: 100vh;
-            padding-bottom: 60px;
-        }
-
-        /* شريط التنقل والتحكم بالأدوار */
-        nav {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
+        
+        body { 
+            background: var(--bg-gradient); 
+            color: var(--text-main); 
+            min-height: 100vh; 
+            padding: 30px 20px; 
+            display: flex; 
+            flex-direction: column; 
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* قماش الخلفية للشهب */
+        #bg-canvas {
+            position: fixed;
             top: 0;
-            z-index: 100;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .logo { font-size: 1.3rem; font-weight: bold; color: var(--primary); }
-
-        .role-switcher {
-            display: flex;
-            background: rgba(255,255,255,0.05);
-            padding: 4px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
+        /* توهج ألوان إضافي خلف الكروت */
+        .glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.06) 0%, transparent 70%);
+            top: 20%;
+            left: 10%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .glow-2 {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.06) 0%, transparent 70%);
+            bottom: 10%;
+            right: 5%;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .role-btn {
-            background: none; border: none; color: var(--text-muted);
-            padding: 8px 16px; border-radius: 10px; cursor: pointer;
-            font-weight: 600; font-size: 0.9rem; transition: all 0.3s;
-        }
+        .header { text-align: center; margin-bottom: 40px; z-index: 1; position: relative; }
+        .header h1 { font-size: 2.2rem; margin-bottom: 12px; background: linear-gradient(to left, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { color: var(--text-sub); font-size: 1rem; }
 
-        .role-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .main-container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
-
-        /* شريط البحث والتصفية (للعميل) */
-        .search-container {
-            display: flex; gap: 15px; margin-bottom: 30px;
-        }
-
-        input, select, textarea {
-            flex: 1; padding: 14px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color); border-radius: 14px;
-            color: white; font-size: 1rem; outline: none;
-        }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); }
-
-        /* شبكة عرض الخدمات */
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;
-        }
-
-        .card {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 24px; padding: 25px; backdrop-filter: blur(15px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            display: flex; flex-direction: column; justify-content: space-between;
-            transition: transform 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); }
-
-        .provider-info { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--secondary); display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .market-grid { width: 100%; max-width: 900px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; z-index: 1; position: relative; }
         
-        .service-title { font-size: 1.2rem; margin-bottom: 10px; color: var(--primary); }
-        .service-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 15px; }
-        
-        .meta-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 20px; color: var(--text-muted); }
-        .price { color: #fff; font-weight: bold; font-size: 1.1rem; }
-
-        .btn-action {
-            width: 100%; padding: 12px; border: none; border-radius: 12px;
-            font-weight: bold; cursor: pointer; transition: background 0.2s;
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;
+        .service-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
+            padding: 25px; 
+            border-radius: 24px; 
+            text-align: center; 
+            transition: all 0.4s ease; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+        .service-card:hover { 
+            transform: translateY(-8px); 
+            border-color: var(--primary); 
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.15); 
+            background: rgba(255, 255, 255, 0.06);
         }
 
-        /* لوحة التحكم بمقدم الخدمة */
-        .hidden { display: none !important; }
-        .section-title { font-size: 1.5rem; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .icon { font-size: 3.2rem; margin-bottom: 15px; display: inline-block; }
+        .title { font-size: 1.35rem; font-weight: 600; margin-bottom: 10px; }
+        .desc { font-size: 0.9rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+        .price { font-size: 1.4rem; font-weight: bold; color: var(--primary); margin-bottom: 20px; }
         
-        /* الحالات وجداول الحجوزات */
-        .booking-item {
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border-color);
-            padding: 15px 20px; border-radius: 16px; margin-bottom: 15px;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+        .buy-btn { 
+            background: rgba(255, 255, 255, 0.04); 
+            color: var(--text-main); 
+            border: 1px solid var(--border-color); 
+            padding: 13px; 
+            border-radius: 16px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            width: 100%; 
+            transition: all 0.3s ease; 
         }
-        .status-badge { padding: 4px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; }
-        .status-معلق { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
-        .status-مؤكد { background: rgba(0, 242, 254, 0.2); color: var(--primary); }
-        .status-مكتمل { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-        .status-ملغى { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-
-        .actions-cell { display: flex; gap: 8px; }
-        .btn-status { padding: 6px 12px; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; color: white; }
-        .btn-confirm { background: var(--success); }
-        .btn-cancel { background: var(--danger); }
+        .buy-btn:hover { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            border-color: transparent; 
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+            color: #000;
+        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">سوق الداني الرقمي 🏛️</div>
-        <div class="role-switcher">
-            <button class="role-btn active" id="btn-client" onclick="switchRole('client')">تصفح كعميل</button>
-            <button class="role-btn" id="btn-provider" onclick="switchRole('provider')">لوحة مقدم الخدمة</button>
-        </div>
-    </nav>
+    <canvas id="bg-canvas"></canvas>
+    <div class="glow"></div>
+    <div class="glow-2"></div>
 
-    <div class="main-container">
-        
-        <div id="client-view">
-            <div class="search-container">
-                <input type="text" id="search-input" placeholder="ابحث عن خدمات (برمجة، تصميم، كتابة...)" oninput="filterServices()">
-            </div>
-            
-            <h2 class="section-title">الخدمات المتاحة</h2>
-            <div class="grid" id="services-grid"></div>
-        </div>
-
-        <div id="provider-view" class="hidden">
-            <div class="section-title">
-                <span>إضافة خدمة جديدة</span>
-            </div>
-            <div class="card" style="margin-bottom: 40px; width: 100%; max-width: 100%;">
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <input type="text" id="new-title" placeholder="عنوان الخدمة">
-                    <textarea id="new-desc" placeholder="وصف الخدمة بالتفصيل..." rows="3"></textarea>
-                    <div style="display: flex; gap: 15px;">
-                        <input type="number" id="new-price" placeholder="السعر ($)">
-                        <input type="text" id="new-duration" placeholder="المدة (مثال: يومين)">
-                    </div>
-                    <button class="btn-action" onclick="addNewService()">نشر الخدمة في السوق ✨</button>
-                </div>
-            </div>
-
-            <h2 class="section-title">إدارة الحجوزات الواردة والتحكم بالحالة</h2>
-            <div id="bookings-list"></div>
-        </div>
-
+    <div class="header">
+        <h1>سوق الخدمات الرقمي 🏪</h1>
+        <p>اختر الخدمة الاحترافية التي تناسب مشروعك القادم وسيتم تحويلك لتأكيد الطلب</p>
     </div>
 
-<script>
-    // قاعدة البيانات الوهمية للخدمات (الواجهة الخلفية الأساسية)
-    let services = [
-        { id: 1, title: "برمجة متجر إلكتروني متكامل", desc: "تصميم وبرمجة متجر متجاوب وسريع مع لوحة تحكم.", price: 150, duration: "5 أيام", provider: "مطور محترف", avatar: "💻" },
-        { id: 2, title: "تصميم هوية بصرية وشعارات", desc: "ابتكار شعار فريد وبناء هوية بصرية كاملة لشركتك.", price: 50, duration: "3 أيام", provider: "المصمم المبدع", avatar: "🎨" },
-        { id: 3, title: "كتابة مقالات متوافقة مع السيو SEO", desc: "كتابة 5 مقالات احترافية لجلب الزوار لموقعك بالترتيب.", price: 20, duration: "يوم واحد", provider: "كاتب محتوى", avatar: "✍️" }
-    ];
+    <div class="market-grid">
+        <div class="service-card">
+            <div>
+                <div class="icon">💻</div>
+                <div class="title">تصميم مواقع الويب</div>
+                <div class="desc">برمجة وتصميم صفحات ويب عصرية ومتجاوبة بالكامل مع جميع الشاشات.</div>
+            </div>
+            <div>
+                <div class="price">$49</div>
+                <button class="buy-btn" onclick="sendOrder('تصميم مواقع الويب', '$49')">طلب الخدمة الآن</button>
+            </div>
+        </div>
 
-    // واجهة الحجوزات وتدفق الحالة (معلق/مؤكد/مكتمل/ملغى)
-    let bookings = [
-        { id: 101, serviceTitle: "تصميم هوية بصرية وشعارات", client: "أحمد علي", price: 50, status: "معلق" }
-    ];
+        <div class="service-card">
+            <div>
+                <div class="icon">🎮</div>
+                <div class="title">تطوير ألعاب بسيطة</div>
+                <div class="desc">بناء ألعاب متصفح تفاعلية ومسلية باستخدام تقنيات الويب الحديثة.</div>
+            </div>
+            <div>
+                <div class="price">$39</div>
+                <button class="buy-btn" onclick="sendOrder('تطوير ألعاب بسيطة', '$39')">طلب الخدمة الآن</button>
+            </div>
+        </div>
 
-    // التبديل بين الأدوار (تحكم في الوصول والمشاهد)
-    function switchRole(role) {
-        document.getElementById('btn-client').classList.toggle('active', role === 'client');
-        document.getElementById('btn-provider').classList.toggle('active', role === 'provider');
-        
-        document.getElementById('client-view').classList.toggle('hidden', role !== 'client');
-        document.getElementById('provider-view').classList.toggle('hidden', role !== 'provider');
-        
-        renderServices();
-        renderBookings();
-    }
+        <div class="service-card">
+            <div>
+                <div class="icon">🚀</div>
+                <div class="title">تحسين سيو المواقع</div>
+                <div class="desc">تهيئة موقعك الإلكتروني ليتصدر نتائج البحث الأولى في محركات البحث.</div>
+            </div>
+            <div>
+                <div class="price">$29</div>
+                <button class="buy-btn" onclick="sendOrder('تحسين سيو المواقع', '$29')">طلب الخدمة الآن</button>
+            </div>
+        </div>
+    </div>
 
-    // عرض الخدمات (تصفح الخدمات للعميل)
-    function renderServices() {
-        const grid = document.getElementById('services-grid');
-        grid.innerHTML = '';
-        
-        services.forEach(service => {
-            grid.innerHTML += `
-                <div class="card">
-                    <div>
-                        <div class="provider-info">
-                            <div class="avatar">${service.avatar}</div>
-                            <div>
-                                <div style="font-weight: bold; font-size: 0.9rem;">${service.provider}</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">متاح الآن</div>
-                            </div>
-                        </div>
-                        <h3 class="service-title">${service.title}</h3>
-                        <p class="service-desc">${service.desc}</p>
-                    </div>
-                    <div>
-                        <div class="meta-info">
-                            <span>⏱️ المدة: ${service.duration}</span>
-                            <span class="price">${service.price}$</span>
-                        </div>
-                        <button class="btn-action" onclick="bookService('${service.title}', ${service.price})">طلب الخدمة وحجزها</button>
-                    </div>
-                </div>
-            `;
-        });
-    }
+    <script>
+        function sendOrder(serviceName, price) {
+            const myPhoneNumber = "249951366471"; 
+            const message = `مرحباً الداني، أود طلب خدمة: (${serviceName}) بسعر (${price}) من متجرك الرقمي.`;
+            const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            alert(`تم تسجيل طلبك لخدمة [${serviceName}] بنجاح! جاري تحويلك الآن لتأكيد الطلب عبر واتساب... 👍`);
+            window.open(whatsappUrl, '_blank');
+        }
 
-    // فلترة وبحث الخدمات (البحث والتصفية)
-    function filterServices() {
-        const query = document.getElementById('search-input').value.toLowerCase();
-        const cards = document.querySelectorAll('#services-grid .card');
-        
-        cards.forEach((card, index) => {
-            const title = services[index].title.toLowerCase();
-            const desc = services[index].desc.toLowerCase();
-            if (title.includes(query) || desc.includes(query)) {
-                card.classList.remove('hidden');
-            } else {
-                card.classList.add('hidden');
+        // كود صناعة تأثير الشهب الساقطة (Shooting Stars) والنجوم الثابتة
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let stars = [];
+        let shootingStars = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initStars();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        // إنشاء النجوم الخلفية الصغيرة الثابتة
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 80; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5,
+                    alpha: Math.random()
+                });
             }
-        });
-    }
-
-    // طلب وحجز الخدمة (جانب العميل)
-    function bookService(title, price) {
-        const newBooking = {
-            id: Date.now(),
-            serviceTitle: title,
-            client: "عميل افتراضي",
-            price: price,
-            status: "معلق"
-        };
-        bookings.push(newBooking);
-        alert(`تم إرسال طلب الحجز بنجاح ومتاح في لوحة التحكم للحالة "معلق"! ✨`);
-        renderBookings();
-    }
-
-    // إضافة قائمة خدمات جديدة (جانب مقدم الخدمة)
-    function addNewService() {
-        const title = document.getElementById('new-title').value.trim();
-        const desc = document.getElementById('new-desc').value.trim();
-        const price = document.getElementById('new-price').value.trim();
-        const duration = document.getElementById('new-duration').value.trim();
-
-        if (!title || !desc || !price || !duration) {
-            alert('فضلاً قم بتعبئة جميع خانات الخدمة!');
-            return;
         }
 
-        services.push({
-            id: Date.now(),
-            title: title,
-            desc: desc,
-            price: parseInt(price),
-            duration: duration,
-            provider: "أنت (مقدم الخدمة)",
-            avatar: "🚀"
-        });
-
-        alert('تم نشر خدماتك الجديدة في السوق بنجاح!');
-        // تصفير الحقول
-        document.getElementById('new-title').value = '';
-        document.getElementById('new-desc').value = '';
-        document.getElementById('new-price').value = '';
-        document.getElementById('new-duration').value = '';
-        
-        renderServices();
-    }
-
-    // عرض الحجوزات وإدارتها وتحديث حالتها (تدفق الحالة)
-    function renderBookings() {
-        const list = document.getElementById('bookings-list');
-        list.innerHTML = '';
-
-        if(bookings.length === 0) {
-            list.innerHTML = '<p style="color: var(--text-muted); text-align: center;">لا توجد حجوزات واردة حالياً.</p>';
-            return;
-        }
-
-        bookings.forEach(b => {
-            let actionButtons = '';
-            if (b.status === 'معلق') {
-                actionButtons = `
-                    <div class="actions-cell">
-                        <button class="btn-status btn-confirm" onclick="updateStatus(${b.id}, 'مؤكد')">قبول</button>
-                        <button class="btn-status btn-cancel" onclick="updateStatus(${b.id}, 'ملغى')">رفض</button>
-                    </div>
-                `;
-            } else if (b.status === 'مؤكد') {
-                actionButtons = `
-                    <button class="btn-status btn-confirm" onclick="updateStatus(${b.id}, 'مكتمل')">إكمال الخدمة 🏁</button>
-                `;
+        // كلاس الشهاب المتحرك
+        class ShootingStar {
+            constructor() {
+                this.reset();
             }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * (canvas.height / 2); // يبدأ من النصف العلوي للشاشة
+                this.length = Math.random() * 80 + 40; // طول ذيل الشهاب
+                this.speed = Math.random() * 4 + 3; // السرعة
+                this.alpha = 1;
+            }
+            update() {
+                // حركة مائلة للشهاب (أسفل ويسار)
+                this.x -= this.speed;
+                this.y += this.speed;
+                this.alpha -= 0.01; // يختفي بالتدريج
 
-            list.innerHTML += `
-                <div class="booking-item">
-                    <div>
-                        <div style="font-weight: bold; font-size: 1.05rem;">${b.serviceTitle}</div>
-                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;">بواسطة: ${b.client} | القيمة: ${b.price}$</div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="status-badge status-${b.status}">${b.status}</span>
-                        ${actionButtons}
-                    </div>
-                </div>
-            `;
-        });
-    }
-
-    // تحديث تدفق الحالة (معلق -> مؤكد -> مكتمل)
-    function updateStatus(id, newStatus) {
-        const booking = bookings.find(b => b.id === id);
-        if (booking) {
-            booking.status = newStatus;
-            renderBookings();
+                // إذا خرج من الشاشة أو انتهى توهجه يعيد توليد نفسه
+                if (this.alpha <= 0 || this.x < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.strokeStyle = `rgba(0, 242, 254, ${this.alpha})`;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                // رسم الشهاب مع ذيله الممتد
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x + this.length, this.y - this.length);
+                ctx.stroke();
+                ctx.restore();
+            }
         }
-    }
 
-    // التشغيل المبدئي للبيانات والتطبيقات
-    renderServices();
-    renderBookings();
-</script>
+        // إنشاء شهابين متحركين بالتناوب
+        for (let i = 0; i < 2; i++) {
+            shootingStars.push(new ShootingStar());
+        }
+
+        resizeCanvas();
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // رسم النجوم الثابتة مع وميض خفيف
+            stars.forEach(star => {
+                star.alpha += Math.random() * 0.02 - 0.01;
+                if (star.alpha < 0) star.alpha = 0;
+                if (star.alpha > 1) star.alpha = 1;
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                ctx.fillRect(star.x, star.y, star.size, star.size);
+            });
+
+            // تحديث ورسم الشهب
+            shootingStars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 
 </body>
-</html>
+    </html>
+    
