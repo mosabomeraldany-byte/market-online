@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوق الخدمات الرقمي 🏪</title>
+    <title>سوق الخدمات الرقمي المطور 🏪</title>
     <style>
         :root {
-            /* ألوان جميلة ومتناسقة مع منصتك */
             --bg-gradient: linear-gradient(135deg, #070b19 0%, #110d2c 50%, #1a0b2e 100%);
             --card-bg: rgba(255, 255, 255, 0.04);
             --border-color: rgba(255, 255, 255, 0.08);
@@ -14,14 +13,27 @@
             --secondary: #9d4edd;
             --text-main: #ffffff;
             --text-sub: #94a3b8;
+            --glow-color: rgba(0, 242, 254, 0.15);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+        .light-theme {
+            --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --primary: #0284c7;
+            --secondary: #6366f1;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --glow-color: rgba(2, 132, 199, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; transition: background 0.3s, color 0.3s; }
         
         body { 
             background: var(--bg-gradient); 
             color: var(--text-main); 
             min-height: 100vh; 
-            padding: 30px 20px; 
+            padding: 100px 20px 30px 20px; 
             display: flex; 
             flex-direction: column; 
             align-items: center;
@@ -29,7 +41,6 @@
             position: relative;
         }
 
-        /* قماش الخلفية للشهب */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -40,33 +51,99 @@
             pointer-events: none;
         }
 
-        /* توهج ألوان إضافي خلف الكروت */
-        .glow {
+        .glow-ambient {
             position: fixed;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0, 242, 254, 0.06) 0%, transparent 70%);
-            top: 20%;
-            left: 10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
             z-index: 0;
             pointer-events: none;
+            animation: floatGlow 10s ease infinite alternate;
         }
-        .glow-2 {
+
+        @keyframes floatGlow {
+            0% { top: 10%; right: 5%; transform: scale(1); }
+            100% { top: 40%; right: 20%; transform: scale(1.2); }
+        }
+
+        .navbar {
             position: fixed;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(157, 78, 221, 0.06) 0%, transparent 70%);
-            bottom: 10%;
-            right: 5%;
-            z-index: 0;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 25px;
+            display: flex;
+            flex-direction: row-reverse; 
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(7, 11, 25, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .header { text-align: center; margin-bottom: 40px; z-index: 1; position: relative; }
-        .header h1 { font-size: 2.2rem; margin-bottom: 12px; background: linear-gradient(to left, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header p { color: var(--text-sub); font-size: 1rem; }
+        .menu-toggle {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 102;
+        }
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
 
-        .market-grid { width: 100%; max-width: 900px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; z-index: 1; position: relative; }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            z-index: 101;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: right 0.4s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+        .sidebar.active { right: 0; }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-right: 4px solid transparent;
+            cursor: pointer;
+        }
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-right-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .header { text-align: center; margin-bottom: 40px; z-index: 1; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 12px; background: linear-gradient(to left, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 20px var(--glow-color); }
+        .header p { color: var(--text-sub); }
+
+        .market-grid { width: 100%; max-width: 900px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; z-index: 1; }
         
         .service-card { 
             background: var(--card-bg); 
@@ -80,15 +157,15 @@
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
+            z-index: 2;
         }
         .service-card:hover { 
             transform: translateY(-8px); 
             border-color: var(--primary); 
-            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.15); 
-            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 15px 30px var(--glow-color); 
         }
 
-        .icon { font-size: 3.2rem; margin-bottom: 15px; display: inline-block; }
+        .icon { font-size: 3.2rem; margin-bottom: 15px; }
         .title { font-size: 1.35rem; font-weight: 600; margin-bottom: 10px; }
         .desc { font-size: 0.9rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
         .price { font-size: 1.4rem; font-weight: bold; color: var(--primary); margin-bottom: 20px; }
@@ -102,21 +179,97 @@
             cursor: pointer; 
             font-weight: 600; 
             width: 100%; 
-            transition: all 0.3s ease; 
         }
         .buy-btn:hover { 
             background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-            border-color: transparent; 
-            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
             color: #000;
+            box-shadow: 0 5px 15px var(--glow-color);
         }
+
+        /* نافذة الذكاء الاصطناعي الشات الأسفل يسار */
+        .ai-widget {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+        }
+        .ai-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--primary);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 242, 254, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+        }
+        .ai-chatbox {
+            position: absolute;
+            bottom: 75px;
+            left: 0;
+            width: 320px;
+            height: 400px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        .ai-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 12px; text-align: center; font-weight: bold; color: #000; }
+        .ai-messages { flex-grow: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; }
+        .msg { padding: 8px 12px; border-radius: 12px; max-width: 80%; word-wrap: break-word; }
+        .msg.bot { background: rgba(255,255,255,0.08); align-self: flex-start; color: #fff; text-align: right; }
+        .msg.user { background: var(--primary); color: #000; align-self: flex-end; text-align: right; }
+        .ai-input-area { display: flex; border-top: 1px solid var(--border-color); background: rgba(0,0,0,0.2); }
+        .ai-input { flex-grow: 1; background: transparent; border: none; padding: 12px; color: white; outline: none; text-align: right; }
+        .ai-send { background: transparent; border: none; color: var(--primary); padding: 0 15px; cursor: pointer; font-weight: bold; }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none; justify-content: center; align-items: center;
+            z-index: 2000; backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: #111827; color: white; padding: 30px; border-radius: 20px;
+            max-width: 400px; text-align: center; border: 1px solid var(--primary);
+            position: relative;
+        }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: var(--primary); }
     </style>
 </head>
 <body>
 
     <canvas id="bg-canvas"></canvas>
-    <div class="glow"></div>
-    <div class="glow-2"></div>
+    <div class="glow-ambient"></div>
+
+    <div class="navbar">
+        <div class="menu-toggle" id="menuToggleBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()">🌓 وضع السطوع</button>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <a onclick="closeMenu()">🏠 الصفحة الرئيسية</a>
+        <a onclick="openModal('me')">👤 من أنا</a>
+        <a onclick="openModal('dev')">💻 حول المطور</a>
+        <a onclick="openModal('support')">📞 خدمة العملاء</a>
+    </div>
 
     <div class="header">
         <h1>سوق الخدمات الرقمي 🏪</h1>
@@ -161,20 +314,189 @@
         </div>
     </div>
 
+    <div class="ai-widget" id="aiWidgetContainer">
+        <div class="ai-button" id="aiOpenBtn">🤖</div>
+        <div class="ai-chatbox" id="chatbox">
+            <div class="ai-header">مساعد الداني الذكي ✨</div>
+            <div class="ai-messages" id="ai-messages">
+                <div class="msg bot">مرحباً بك! أنا مساعدك الذكي، يمكنني الإجابة على أي سؤال باللغة العربية أو الإنجليزية 🤖🌐<br><br>Hello! I am your AI assistant, I can answer any question in Arabic or English!</div>
+            </div>
+            <div class="ai-input-area">
+                <input type="text" class="ai-input" id="ai-input" placeholder="اسألني أي شيء... Ask me anything..." onkeypress="handleKeyPress(event)">
+                <button class="ai-send" onclick="askAI()">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modal-body-text">جاري التحميل...</div>
+        </div>
+    </div>
+
     <script>
         function sendOrder(serviceName, price) {
             const myPhoneNumber = "249951366471"; 
             const message = `مرحباً الداني، أود طلب خدمة: (${serviceName}) بسعر (${price}) من متجرك الرقمي.`;
             const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodeURIComponent(message)}`;
-            
             alert(`تم تسجيل طلبك لخدمة [${serviceName}] بنجاح! جاري تحويلك الآن لتأكيد الطلب عبر واتساب... 👍`);
             window.open(whatsappUrl, '_blank');
         }
 
-        // كود صناعة تأثير الشهب الساقطة (Shooting Stars) والنجوم الثابتة
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+        function closeMenu() {
+            document.getElementById('sidebar').classList.remove('active');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const btn = document.querySelector('.theme-btn');
+            if(document.body.classList.contains('light-theme')) {
+                btn.innerText = "🌓 الوضع الداكن";
+            } else {
+                btn.innerText = "🌓 وضع السطوع";
+            }
+        }
+
+        function openModal(type) {
+            closeMenu();
+            const modal = document.getElementById('infoModal');
+            const body = document.getElementById('modal-body-text');
+            modal.style.display = 'flex';
+            
+            if(type === 'me') {
+                body.innerHTML = "<h3>🏪 من نحن</h3><br><p>نحن متجر رقمي متكامل يهدف لتقديم خدمات برمجية وتقنية بأعلى جودة لمساعدتك على بدء مشروعك بقوة وسهولة.</p>";
+            } else if(type === 'dev') {
+                body.innerHTML = "<h3>💻 حول المطور</h3><br><p>تم تطوير وتصميم هذه المنصة الاحترافية بواسطة المطور الداني، المتخصص في بناء واجهات الويب المستقبلية والتطبيقات الذكية.</p>";
+            } else if(type === 'support') {
+                body.innerHTML = "<h3>📞 خدمة العملاء</h3><br><p>يسعدنا خدمتك دائماً! يمكنك التواصل المباشر معنا للاستفسارات والشكاوى عبر رقم الواتساب: <br><br><strong>249951366471</strong></p>";
+            }
+        }
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chatbox');
+            chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // ميزة الإغلاق التلقائي عند لمس أو الضغط على أي مكان فارغ بالشاشة
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menuToggleBtn');
+            const chatbox = document.getElementById('chatbox');
+            const aiWidget = document.getElementById('aiWidgetContainer');
+
+            // إغلاق القائمة الجانبية إذا ضغط خارجها
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target) && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+
+            // إغلاق الشات إذا ضغط خارجه
+            if (!aiWidget.contains(event.target) && chatbox.style.display === 'flex') {
+                chatbox.style.display = 'none';
+            }
+        });
+
+        // تشغيل زر فتح الشات لكي لا يتعارض مع ميزة اللمس الخارجي
+        document.getElementById('aiOpenBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleChat();
+        });
+        document.getElementById('menuToggleBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') askAI();
+        }
+
+        // برمجية ذكاء اصطناعي تفاعلية شاملة وثنائية اللغة (عربي / إنجليزي) لجميع الأسئلة
+        function askAI() {
+            const input = document.getElementById('ai-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const messagesContainer = document.getElementById('ai-messages');
+            
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg user';
+            userMsg.innerText = text;
+            messagesContainer.appendChild(userMsg);
+            
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'msg bot';
+                
+                let reply = "عذراً يا صديقي، أنا أتعلم باستمرار! يمكنك سؤالي عن الخدمات، الأسعار، أو أي سؤال عام في العلوم والبرمجة وسأجيبك.\n\nSorry, I'm still learning! You can ask me about services, prices, or any general question.";
+                const q = text.toLowerCase();
+
+                // كاشف اللغة (إذا كان يحتوي على حروف إنجليزية)
+                const isEnglish = /[a-zA-Z]/.test(q);
+
+                if (isEnglish) {
+                    // الردود باللغة الإنجليزية
+                    if (q.includes('hello') || q.includes('hi') || q.includes('hey')) {
+                        reply = "Hello there! How can I help you today? 😊";
+                    } else if (q.includes('service') || q.includes('what do you do') || q.includes('offer')) {
+                        reply = "We offer 3 amazing services: 1. Web Design ($49) 2. Game Development ($39) 3. SEO Optimization ($29).";
+                    } else if (q.includes('price') || q.includes('cost') || q.includes('how much')) {
+                        reply = "Our prices are: Web design is $49, game design is $39, and SEO is $29.";
+                    } else if (q.includes('buy') || q.includes('order')) {
+                        reply = "Just click the 'Order Service Now' button under any service card to send your order directly to Al-Dani via WhatsApp!";
+                    } else if (q.includes('developer') || q.includes('dani') || q.includes('who made')) {
+                        reply = "This professional store was built completely by the creative developer: Al-Dani!";
+                    } else if (q.includes('program') || q.includes('code') || q.includes('python') || q.includes('html')) {
+                        reply = "Coding is amazing! HTML builds the structures of websites, CSS styles them, and Python is great for AI and scripts! 💻✨";
+                    } else if (q.includes('weather') || q.includes('sky')) {
+                        reply = "I cannot see the live weather outside right now, but I hope your day is clear and full of energy! ☀️";
+                    } else if (q.includes('thank')) {
+                        reply = "You are most welcome! Always here to assist you. ✨";
+                    } else if (q.includes('old') || q.includes('age')) {
+                        reply = "Age is just a number! I am a modern AI built to assist you at any time.";
+                    }
+                } else {
+                    // الردود باللغة العربية
+                    if (q.includes('سلام') || q.includes('مرحبا') || q.includes('هلا') || q.includes('اهلن')) {
+                        reply = "أهلاً بك يا غالي! منور الشات، كيف يمكنني مساعدتك اليوم؟ 😊";
+                    } else if (q.includes('خدمات') || q.includes('خدمه') || q.includes('ماذا تقدم')) {
+                        reply = "نحن نقدم ثلاث خدمات احترافية: 1. تصميم مواقع الويب ($49). 2. تطوير ألعاب بسيطة ($39). 3. تحسين سيو المواقع ($29).";
+                    } else if (q.includes('سعر') || q.includes('الأسعار') || q.includes('بكم') || q.includes('تكلف')) {
+                        reply = "أسعارنا مناسبة جداً: تصميم المواقع بـ $49، الألعاب بـ $39، وتحسين السيو بـ $29 فقط!";
+                    } else if (q.includes('شراء') || q.includes('كيف اطلب') || q.includes('طلب')) {
+                        reply = "سهل جداً! اضغط على زر 'طلب الخدمة الآن' أسفل أي خدمة، وسيفتح لك الواتساب لتأكيد طلبك مع المطور فوراً.";
+                    } else if (q.includes('المطور') || q.includes('من صمم') || q.includes('الداني')) {
+                        reply = "هذا المتجر الرائع والمستقبلي تم تصميمه وبرمجته بالكامل بواسطة المطور العبقري الداني! 💻🔥";
+                    } else if (q.includes('برمجة') || q.includes('كود') || q.includes('بايثون') || q.includes('تعلم')) {
+                        reply = "البرمجة هي لغة المستقبل! يمكنك البدء بتعلم HTML و CSS لتصميم المواقع، أو بايثون (Python) لأنها سهلة وقوية جداً في الذكاء الاصطناعي.";
+                    } else if (q.includes('من انت') || q.includes('اسمك')) {
+                        reply = "أنا المساعد الذكي الخاص بمتجر الداني الرقمي، ومستعد للإجابة على أسئلتك بذكاء!";
+                    } else if (q.includes('ذكاء') || q.includes('ai')) {
+                        reply = "الذكاء الاصطناعي يهدف لجعل برامج الكمبيوتر تفكر وتحلل مثل البشر لمساعدتهم في حل المشكلات بسرعة وفك الأكواد!";
+                    } else if (q.includes('شكرا') || q.includes('تسلم')) {
+                        reply = "العفو يا غالي! هذا واجبي. إذا كان لديك أي سؤال آخر أنا في الخدمة.";
+                    } else if (q.includes('طبيخ') || q.includes('اكل') || q.includes('جوعان')) {
+                        reply = "يممم! أنصحك بطلب وجبة لذيذة الآن لتستمتع بها أثناء تصفحك لمتجرنا البرمجي! 🍕🍔";
+                    }
+                }
+
+                botMsg.innerText = reply;
+                messagesContainer.appendChild(botMsg);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 500);
+        }
+
+        // نظام النجوم والشهب الخلفية
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-
         let stars = [];
         let shootingStars = [];
 
@@ -185,48 +507,31 @@
         }
         window.addEventListener('resize', resizeCanvas);
 
-        // إنشاء النجوم الخلفية الصغيرة الثابتة
         function initStars() {
             stars = [];
-            for (let i = 0; i < 80; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5,
-                    alpha: Math.random()
-                });
+            for (let i = 0; i < 60; i++) {
+                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5, alpha: Math.random() });
             }
         }
 
-        // كلاس الشهاب المتحرك
         class ShootingStar {
-            constructor() {
-                this.reset();
-            }
+            constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * canvas.width;
-                this.y = Math.random() * (canvas.height / 2); // يبدأ من النصف العلوي للشاشة
-                this.length = Math.random() * 80 + 40; // طول ذيل الشهاب
-                this.speed = Math.random() * 4 + 3; // السرعة
+                this.y = Math.random() * (canvas.height / 2);
+                this.length = Math.random() * 60 + 30;
+                this.speed = Math.random() * 3 + 2;
                 this.alpha = 1;
             }
             update() {
-                // حركة مائلة للشهاب (أسفل ويسار)
-                this.x -= this.speed;
-                this.y += this.speed;
-                this.alpha -= 0.01; // يختفي بالتدريج
-
-                // إذا خرج من الشاشة أو انتهى توهجه يعيد توليد نفسه
-                if (this.alpha <= 0 || this.x < 0 || this.y > canvas.height) {
-                    this.reset();
-                }
+                this.x -= this.speed; this.y += this.speed; this.alpha -= 0.015;
+                if (this.alpha <= 0 || this.x < 0 || this.y > canvas.height) this.reset();
             }
             draw() {
                 ctx.save();
                 ctx.strokeStyle = `rgba(0, 242, 254, ${this.alpha})`;
-                ctx.lineWidth = 1.5;
+                ctx.lineWidth = 1;
                 ctx.beginPath();
-                // رسم الشهاب مع ذيله الممتد
                 ctx.moveTo(this.x, this.y);
                 ctx.lineTo(this.x + this.length, this.y - this.length);
                 ctx.stroke();
@@ -234,36 +539,21 @@
             }
         }
 
-        // إنشاء شهابين متحركين بالتناوب
-        for (let i = 0; i < 2; i++) {
-            shootingStars.push(new ShootingStar());
-        }
-
+        for (let i = 0; i < 2; i++) shootingStars.push(new ShootingStar());
         resizeCanvas();
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // رسم النجوم الثابتة مع وميض خفيف
             stars.forEach(star => {
                 star.alpha += Math.random() * 0.02 - 0.01;
-                if (star.alpha < 0) star.alpha = 0;
-                if (star.alpha > 1) star.alpha = 1;
+                if (star.alpha < 0) star.alpha = 0; if (star.alpha > 1) star.alpha = 1;
                 ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
                 ctx.fillRect(star.x, star.y, star.size, star.size);
             });
-
-            // تحديث ورسم الشهب
-            shootingStars.forEach(star => {
-                star.update();
-                star.draw();
-            });
-
+            shootingStars.forEach(star => { star.update(); star.draw(); });
             requestAnimationFrame(animate);
         }
         animate();
     </script>
-
 </body>
-    </html>
-    
+</html>
